@@ -17,62 +17,48 @@ function extractFirstSentence(text: string): string {
   return match ? match[0] : cleaned.substring(0, 150) + "..."
 }
 
-// Arseblog scraper (HTML)
+// Arseblog scraper (RSS)
 async function scrapeArseblog(): Promise<ScrapedArticle[]> {
   const articles: ScrapedArticle[] = []
   try {
-    const response = await fetch("https://arseblog.com", {
+    const response = await fetch("https://arseblog.com/feed", {
       headers: {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
       },
     })
 
     if (!response.ok) {
-      console.error(`[v0] Arseblog HTTP error: ${response.status}`)
+      console.error(`[v0] Arseblog RSS HTTP error: ${response.status}`)
       return articles
     }
 
-    const html = await response.text()
-    const $ = cheerio.load(html)
+    const xml = await response.text()
+    const $ = cheerio.load(xml, { xmlMode: true })
 
-    // Try multiple selectors for articles
-    const articleSelectors = ["article", ".post", ".entry", ".content article"]
-    let foundArticles = false
+    const items = $("item")
+    console.log(`[v0] Arseblog RSS found ${items.length} items`)
 
-    for (const selector of articleSelectors) {
-      const elements = $(selector)
-      if (elements.length > 0) {
-        console.log(`[v0] Arseblog found ${elements.length} articles with selector: ${selector}`)
-        foundArticles = true
+    items.slice(0, 3).each((_, el) => {
+      const title = $(el).find("title").text().trim()
+      const url = $(el).find("link").text().trim()
+      const description = $(el).find("description").text().trim()
+      const pubDate = $(el).find("pubDate").text().trim()
 
-        elements.slice(0, 3).each((_, el) => {
-          const titleEl = $(el).find("h2 a, h3 a, h1 a, .entry-title a").first()
-          const title = titleEl.text().trim()
-          const url = titleEl.attr("href")
-          const excerpt = $(el).find("p, .entry-excerpt, .excerpt").first().text().trim()
-          const dateEl = $(el).find("time, .post-date, .entry-date")
-          const dateText = dateEl.attr("datetime") || dateEl.text()
-
-          if (title && url) {
-            articles.push({
-              title,
-              summary: excerpt ? extractFirstSentence(excerpt) : "Read the full article for details.",
-              url: url.startsWith("http") ? url : `https://arseblog.com${url}`,
-              publishedAt: new Date(dateText || new Date()),
-              source: "Arseblog",
-              sourceUrl: "https://arseblog.com",
-            })
-          }
+      if (title && url) {
+        articles.push({
+          title,
+          summary: extractFirstSentence(description) || "Read the full article for details.",
+          url,
+          publishedAt: new Date(pubDate || new Date()),
+          source: "Arseblog",
+          sourceUrl: "https://arseblog.com",
         })
-        break
       }
-    }
+    })
 
-    if (!foundArticles) {
-      console.error("[v0] Arseblog: No articles found with any selector")
-    }
+    console.log(`[v0] Arseblog parsed ${articles.length} articles`)
   } catch (error) {
-    console.error("[v0] Error scraping Arseblog:", error)
+    console.error("[v0] Error scraping Arseblog RSS:", error)
   }
   return articles
 }
