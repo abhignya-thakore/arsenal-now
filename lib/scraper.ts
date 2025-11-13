@@ -6,6 +6,7 @@ interface ScrapedArticle {
   url: string
   publishedAt: Date
   source: string
+  sourceUrl: string
 }
 
 function extractFirstSentence(text: string): string {
@@ -40,10 +41,11 @@ async function scrapeArseblog(): Promise<ScrapedArticle[]> {
         if (title && url && excerpt) {
           articles.push({
             title,
-            summary: extractFirstSentence(excerpt), // Use first sentence only
+            summary: extractFirstSentence(excerpt),
             url: url.startsWith("http") ? url : `https://arseblog.com${url}`,
             publishedAt: new Date(dateText || new Date()),
             source: "Arseblog",
+            sourceUrl: "https://arseblog.com",
           })
         }
       })
@@ -77,10 +79,11 @@ async function scrapePainInArsenal(): Promise<ScrapedArticle[]> {
         if (title && url && excerpt) {
           articles.push({
             title,
-            summary: extractFirstSentence(excerpt), // Use first sentence only
+            summary: extractFirstSentence(excerpt),
             url: url.startsWith("http") ? url : `https://www.paininthearsenal.com${url}`,
             publishedAt: new Date(dateText || new Date()),
             source: "Pain in the Arsenal",
+            sourceUrl: "https://www.paininthearsenal.com",
           })
         }
       })
@@ -108,10 +111,11 @@ async function scrapeEspn(): Promise<ScrapedArticle[]> {
         if (title && url && title.toLowerCase().includes("arsenal")) {
           articles.push({
             title,
-            summary: extractFirstSentence(description), // Use first sentence only
+            summary: extractFirstSentence(description),
             url,
             publishedAt: new Date(pubDate || new Date()),
             source: "ESPN",
+            sourceUrl: "https://www.espn.com",
           })
         }
       })
@@ -139,10 +143,11 @@ async function scrapeGuardian(): Promise<ScrapedArticle[]> {
         if (title && url) {
           articles.push({
             title,
-            summary: extractFirstSentence(description), // Use first sentence only
+            summary: extractFirstSentence(description),
             url,
             publishedAt: new Date(pubDate || new Date()),
             source: "The Guardian",
+            sourceUrl: "https://www.theguardian.com",
           })
         }
       })
@@ -170,10 +175,11 @@ async function scrapeFootballLondon(): Promise<ScrapedArticle[]> {
         if (title && url) {
           articles.push({
             title,
-            summary: extractFirstSentence(description), // Use first sentence only
+            summary: extractFirstSentence(description),
             url,
             publishedAt: new Date(pubDate || new Date()),
             source: "Football London",
+            sourceUrl: "https://www.football.london",
           })
         }
       })
@@ -202,10 +208,11 @@ async function scrapeAthletic(): Promise<ScrapedArticle[]> {
         if (title && url && title.toLowerCase().includes("arsenal")) {
           articles.push({
             title,
-            summary: extractFirstSentence(description), // Use first sentence only
+            summary: extractFirstSentence(description),
             url,
             publishedAt: new Date(pubDate || new Date()),
             source: "The Athletic",
+            sourceUrl: "https://theathletic.com",
           })
         }
       })
