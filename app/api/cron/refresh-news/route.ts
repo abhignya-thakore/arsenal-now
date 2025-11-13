@@ -19,8 +19,11 @@ export async function GET(request: Request) {
 
     let inserted = 0
     let skipped = 0
+    const errors: Array<{ article: string; error: string }> = []
 
     for (const article of articles) {
+      console.log("[v0] Attempting to insert article:", article.title)
+
       const { error } = await supabase.from("articles").insert({
         title: article.title,
         summary: article.summary,
@@ -31,12 +34,14 @@ export async function GET(request: Request) {
       })
 
       if (error) {
+        console.error("[v0] Error inserting article:", article.title, error)
         if (error.message.includes("duplicate") || error.message.includes("unique")) {
           skipped++
         } else {
-          console.error("[v0] Error inserting article:", error)
+          errors.push({ article: article.title, error: error.message })
         }
       } else {
+        console.log("[v0] Successfully inserted:", article.title)
         inserted++
       }
     }
@@ -50,6 +55,7 @@ export async function GET(request: Request) {
       scraped: articles.length,
       inserted,
       skipped,
+      errors: errors.length > 0 ? errors : undefined,
       timestamp: new Date().toISOString(),
       sources: {
         Arseblog: articles.filter((a) => a.source === "Arseblog").length,
