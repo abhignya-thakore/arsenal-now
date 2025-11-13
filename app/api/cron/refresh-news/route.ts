@@ -18,19 +18,17 @@ export async function GET(request: Request) {
 
     console.log("[v0] Scraped articles:", articles.length)
 
-    // Insert new articles (ignoring duplicates based on article_url)
+    // Insert new articles (ignoring duplicates based on url)
     for (const article of articles) {
       await supabase
         .from("articles")
         .insert({
           title: article.title,
           summary: article.summary,
-          source_name: article.source,
-          source_url: article.source,
-          article_url: article.url,
+          source: article.source,
+          url: article.url,
           published_at: article.publishedAt,
         })
-        .throwOnError()
         .catch(() => {
           // Ignore duplicate URL errors
         })
