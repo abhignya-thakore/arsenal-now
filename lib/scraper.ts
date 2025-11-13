@@ -26,31 +26,53 @@ async function scrapeArseblog(): Promise<ScrapedArticle[]> {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
       },
     })
+
+    if (!response.ok) {
+      console.error(`[v0] Arseblog HTTP error: ${response.status}`)
+      return articles
+    }
+
     const html = await response.text()
     const $ = cheerio.load(html)
 
-    $("article")
-      .slice(0, 3)
-      .each((_, el) => {
-        const titleEl = $(el).find("h2 a, h3 a").first()
-        const title = titleEl.text().trim()
-        const url = titleEl.attr("href")
-        const excerpt = $(el).find("p").first().text().trim()
-        const dateText = $(el).find("time").attr("datetime")
+    // Try multiple selectors for articles
+    const articleSelectors = ["article", ".post", ".entry", ".content article"]
+    let foundArticles = false
 
-        if (title && url && excerpt) {
-          articles.push({
-            title,
-            summary: extractFirstSentence(excerpt),
-            url: url.startsWith("http") ? url : `https://arseblog.com${url}`,
-            publishedAt: new Date(dateText || new Date()),
-            source: "Arseblog",
-            sourceUrl: "https://arseblog.com",
-          })
-        }
-      })
+    for (const selector of articleSelectors) {
+      const elements = $(selector)
+      if (elements.length > 0) {
+        console.log(`[v0] Arseblog found ${elements.length} articles with selector: ${selector}`)
+        foundArticles = true
+
+        elements.slice(0, 3).each((_, el) => {
+          const titleEl = $(el).find("h2 a, h3 a, h1 a, .entry-title a").first()
+          const title = titleEl.text().trim()
+          const url = titleEl.attr("href")
+          const excerpt = $(el).find("p, .entry-excerpt, .excerpt").first().text().trim()
+          const dateEl = $(el).find("time, .post-date, .entry-date")
+          const dateText = dateEl.attr("datetime") || dateEl.text()
+
+          if (title && url) {
+            articles.push({
+              title,
+              summary: excerpt ? extractFirstSentence(excerpt) : "Read the full article for details.",
+              url: url.startsWith("http") ? url : `https://arseblog.com${url}`,
+              publishedAt: new Date(dateText || new Date()),
+              source: "Arseblog",
+              sourceUrl: "https://arseblog.com",
+            })
+          }
+        })
+        break
+      }
+    }
+
+    if (!foundArticles) {
+      console.error("[v0] Arseblog: No articles found with any selector")
+    }
   } catch (error) {
-    console.error("Error scraping Arseblog:", error)
+    console.error("[v0] Error scraping Arseblog:", error)
   }
   return articles
 }
@@ -96,33 +118,48 @@ async function scrapePainInArsenal(): Promise<ScrapedArticle[]> {
 async function scrapeEspn(): Promise<ScrapedArticle[]> {
   const articles: ScrapedArticle[] = []
   try {
-    const response = await fetch("https://feeds.espn.com/feeds/site/espn/print/soccer/news.xml")
+    // Try Arsenal-specific feed first
+    const response = await fetch("https://www.espn.com/espn/rss/soccer/news", {
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+      },
+    })
+
+    if (!response.ok) {
+      console.error(`[v0] ESPN HTTP error: ${response.status}`)
+      return articles
+    }
+
     const xml = await response.text()
     const $ = cheerio.load(xml, { xmlMode: true })
 
-    $("item")
-      .slice(0, 3)
-      .each((_, el) => {
-        const title = $(el).find("title").text().trim()
-        const url = $(el).find("link").text().trim()
-        const description = $(el).find("description").text().trim()
-        const pubDate = $(el).find("pubDate").text().trim()
+    const items = $("item")
+    console.log(`[v0] ESPN found ${items.length} total items`)
 
-        if (title && url && title.toLowerCase().includes("arsenal")) {
-          articles.push({
-            title,
-            summary: extractFirstSentence(description),
-            url,
-            publishedAt: new Date(pubDate || new Date()),
-            source: "ESPN",
-            sourceUrl: "https://www.espn.com",
-          })
-        }
-      })
+    items.each((_, el) => {
+      const title = $(el).find("title").text().trim()
+      const url = $(el).find("link").text().trim()
+      const description = $(el).find("description").text().trim()
+      const pubDate = $(el).find("pubDate").text().trim()
+
+      // Filter for Arsenal articles
+      if (title && url && title.toLowerCase().includes("arsenal")) {
+        articles.push({
+          title,
+          summary: extractFirstSentence(description) || "Read the full article for details.",
+          url,
+          publishedAt: new Date(pubDate || new Date()),
+          source: "ESPN",
+          sourceUrl: "https://www.espn.com",
+        })
+      }
+    })
+
+    console.log(`[v0] ESPN found ${articles.length} Arsenal articles`)
   } catch (error) {
-    console.error("Error scraping ESPN RSS:", error)
+    console.error("[v0] Error scraping ESPN RSS:", error)
   }
-  return articles
+  return articles.slice(0, 3)
 }
 
 async function scrapeGuardian(): Promise<ScrapedArticle[]> {
@@ -192,34 +229,47 @@ async function scrapeFootballLondon(): Promise<ScrapedArticle[]> {
 async function scrapeAthletic(): Promise<ScrapedArticle[]> {
   const articles: ScrapedArticle[] = []
   try {
-    // The Athletic public RSS feed
-    const response = await fetch("https://theathletic.com/rss/feed/soccer/premier-league")
+    const response = await fetch("https://theathletic.com/rss/", {
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+      },
+    })
+
+    if (!response.ok) {
+      console.error(`[v0] The Athletic HTTP error: ${response.status}`)
+      return articles
+    }
+
     const xml = await response.text()
     const $ = cheerio.load(xml, { xmlMode: true })
 
-    $("item")
-      .slice(0, 3)
-      .each((_, el) => {
-        const title = $(el).find("title").text().trim()
-        const url = $(el).find("link").text().trim()
-        const description = $(el).find("description").text().trim()
-        const pubDate = $(el).find("pubDate").text().trim()
+    const items = $("item")
+    console.log(`[v0] The Athletic found ${items.length} total items`)
 
-        if (title && url && title.toLowerCase().includes("arsenal")) {
-          articles.push({
-            title,
-            summary: extractFirstSentence(description),
-            url,
-            publishedAt: new Date(pubDate || new Date()),
-            source: "The Athletic",
-            sourceUrl: "https://theathletic.com",
-          })
-        }
-      })
+    items.each((_, el) => {
+      const title = $(el).find("title").text().trim()
+      const url = $(el).find("link").text().trim()
+      const description = $(el).find("description").text().trim()
+      const pubDate = $(el).find("pubDate").text().trim()
+
+      // Filter for Arsenal articles
+      if (title && url && title.toLowerCase().includes("arsenal")) {
+        articles.push({
+          title,
+          summary: extractFirstSentence(description) || "Read the full article for details.",
+          url,
+          publishedAt: new Date(pubDate || new Date()),
+          source: "The Athletic",
+          sourceUrl: "https://theathletic.com",
+        })
+      }
+    })
+
+    console.log(`[v0] The Athletic found ${articles.length} Arsenal articles`)
   } catch (error) {
-    console.error("Error scraping The Athletic RSS:", error)
+    console.error("[v0] Error scraping The Athletic RSS:", error)
   }
-  return articles
+  return articles.slice(0, 3)
 }
 
 export async function scrapeAllSources(): Promise<ScrapedArticle[]> {
