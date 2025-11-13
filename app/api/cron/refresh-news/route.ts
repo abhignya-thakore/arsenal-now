@@ -7,6 +7,15 @@ export async function GET(request: Request) {
   const secretParam = url.searchParams.get("secret")
 
   const expectedSecret = process.env.CRON_SECRET
+
+  console.log("[v0] Auth Debug:", {
+    hasAuthHeader: !!authHeader,
+    hasSecretParam: !!secretParam,
+    hasExpectedSecret: !!expectedSecret,
+    secretParamLength: secretParam?.length,
+    expectedSecretLength: expectedSecret?.length,
+  })
+
   const isAuthorized = authHeader === `Bearer ${expectedSecret}` || secretParam === expectedSecret
 
   if (!isAuthorized) {
