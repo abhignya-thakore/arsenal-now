@@ -2,9 +2,14 @@ import { createClient } from "@/lib/supabase/server"
 import { scrapeAllSources } from "@/lib/scraper"
 
 export async function GET(request: Request) {
-  // Verify the request is from Vercel
   const authHeader = request.headers.get("authorization")
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  const url = new URL(request.url)
+  const secretParam = url.searchParams.get("secret")
+
+  const expectedSecret = process.env.CRON_SECRET
+  const isAuthorized = authHeader === `Bearer ${expectedSecret}` || secretParam === expectedSecret
+
+  if (!isAuthorized) {
     return Response.json({ error: "Unauthorized" }, { status: 401 })
   }
 
@@ -45,7 +50,4 @@ export async function GET(request: Request) {
   }
 }
 
-// Configure cron schedule: daily at 9 AM UTC
-export const config = {
-  runtime: "nodejs",
-}
+// Cron schedule configured in Vercel: daily at 9 AM UTC
