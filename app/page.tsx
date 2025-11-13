@@ -21,7 +21,6 @@ export default async function Home() {
     .order("published_at", { ascending: false })
     .limit(100)
 
-  // Group articles by source
   const articlesBySource = (articles || []).reduce(
     (acc, article) => {
       if (!acc[article.source_name]) {
@@ -30,7 +29,7 @@ export default async function Home() {
       acc[article.source_name].push(article)
       return acc
     },
-    {} as Record<string, typeof articles>,
+    {} as Record<string, any[]>,
   )
 
   const sources = Object.keys(articlesBySource).sort()

@@ -20,13 +20,13 @@ export async function GET(request: Request) {
     let inserted = 0
     let skipped = 0
 
-    // Insert new articles (ignoring duplicates based on url)
     for (const article of articles) {
       const { error } = await supabase.from("articles").insert({
         title: article.title,
         summary: article.summary,
-        source: article.source,
-        url: article.url,
+        source_name: article.source,
+        source_url: article.sourceUrl,
+        article_url: article.url,
         published_at: article.publishedAt,
       })
 
