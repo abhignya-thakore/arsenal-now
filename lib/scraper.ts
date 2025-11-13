@@ -8,6 +8,14 @@ interface ScrapedArticle {
   source: string
 }
 
+function extractFirstSentence(text: string): string {
+  // Remove HTML tags
+  const cleaned = text.replace(/<[^>]*>/g, "").trim()
+  // Extract first sentence (ends with . ! or ?)
+  const match = cleaned.match(/^[^.!?]*[.!?]/)
+  return match ? match[0] : cleaned.substring(0, 150) + "..."
+}
+
 // Arseblog scraper (HTML)
 async function scrapeArseblog(): Promise<ScrapedArticle[]> {
   const articles: ScrapedArticle[] = []
@@ -32,7 +40,7 @@ async function scrapeArseblog(): Promise<ScrapedArticle[]> {
         if (title && url && excerpt) {
           articles.push({
             title,
-            summary: excerpt.substring(0, 200),
+            summary: extractFirstSentence(excerpt), // Use first sentence only
             url: url.startsWith("http") ? url : `https://arseblog.com${url}`,
             publishedAt: new Date(dateText || new Date()),
             source: "Arseblog",
@@ -69,7 +77,7 @@ async function scrapePainInArsenal(): Promise<ScrapedArticle[]> {
         if (title && url && excerpt) {
           articles.push({
             title,
-            summary: excerpt.substring(0, 200),
+            summary: extractFirstSentence(excerpt), // Use first sentence only
             url: url.startsWith("http") ? url : `https://www.paininthearsenal.com${url}`,
             publishedAt: new Date(dateText || new Date()),
             source: "Pain in the Arsenal",
@@ -100,7 +108,7 @@ async function scrapeEspn(): Promise<ScrapedArticle[]> {
         if (title && url && title.toLowerCase().includes("arsenal")) {
           articles.push({
             title,
-            summary: description.substring(0, 200).replace(/<[^>]*>/g, ""),
+            summary: extractFirstSentence(description), // Use first sentence only
             url,
             publishedAt: new Date(pubDate || new Date()),
             source: "ESPN",
@@ -131,7 +139,7 @@ async function scrapeGuardian(): Promise<ScrapedArticle[]> {
         if (title && url) {
           articles.push({
             title,
-            summary: description.substring(0, 200).replace(/<[^>]*>/g, ""),
+            summary: extractFirstSentence(description), // Use first sentence only
             url,
             publishedAt: new Date(pubDate || new Date()),
             source: "The Guardian",
@@ -162,7 +170,7 @@ async function scrapeFootballLondon(): Promise<ScrapedArticle[]> {
         if (title && url) {
           articles.push({
             title,
-            summary: description.substring(0, 200).replace(/<[^>]*>/g, ""),
+            summary: extractFirstSentence(description), // Use first sentence only
             url,
             publishedAt: new Date(pubDate || new Date()),
             source: "Football London",
@@ -194,7 +202,7 @@ async function scrapeAthletic(): Promise<ScrapedArticle[]> {
         if (title && url && title.toLowerCase().includes("arsenal")) {
           articles.push({
             title,
-            summary: description.substring(0, 200).replace(/<[^>]*>/g, ""),
+            summary: extractFirstSentence(description), // Use first sentence only
             url,
             publishedAt: new Date(pubDate || new Date()),
             source: "The Athletic",

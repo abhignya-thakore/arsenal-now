@@ -7,7 +7,7 @@ import { SidebarAds } from "@/components/sidebar-ads"
 export const metadata = {
   title: "ArsenalNow | Latest Arsenal FC News",
   description:
-    "ArsenalNow - Stay updated with daily Arsenal FC news from top sources including Arseblog, The Athletic, ESPN, and more.",
+    "ArsenalNow - Curated one-sentence summaries of Arsenal FC news from top sources with direct links to full articles.",
 }
 
 export default async function Home() {
@@ -48,8 +48,8 @@ export default async function Home() {
             <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-foreground">ArsenalNow</h1>
           </div>
           <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed mb-12">
-            Daily curated Arsenal FC news from trusted sources. One-to-two paragraph summaries with direct links.
-            Updated daily at 9 AM UTC.
+            Daily Arsenal FC news from trusted sources. One-sentence summaries with direct links to full articles. Every
+            story links you to the original source for complete coverage. Updated daily at 9 AM UTC.
           </p>
 
           {/* Newsletter Signup */}
@@ -123,7 +123,10 @@ export default async function Home() {
             ArsenalNow curates news from Arseblog, Pain in the Arsenal, The Athletic, ESPN, Football London, and The
             Guardian
           </p>
-          <p className="mt-3">Updated daily • © 2025</p>
+          <p className="mt-2">
+            Each story links to its original source. We respect copyright and provide summaries only.
+          </p>
+          <p className="mt-3">Updated daily • © 2025 abhignya thakore</p>
         </div>
       </footer>
     </main>
