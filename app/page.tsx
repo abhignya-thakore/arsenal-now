@@ -68,7 +68,7 @@ export default async function Home() {
       <section className="border-b border-border py-16 md:py-24">
         <div className="max-w-6xl mx-auto px-4 md:px-6">
           <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
-            {/* Left side - Logo, title, description, newsletter */}
+            {/* Left side - Logo, title, description, image, newsletter */}
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-8">
                 <div className="w-10 h-10 bg-primary rounded-sm flex items-center justify-center">
@@ -76,10 +76,15 @@ export default async function Home() {
                 </div>
                 <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-foreground">ArsenalNow</h1>
               </div>
-              <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed mb-12">
+              <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed mb-8">
                 Daily Arsenal FC news from trusted sources. Headlines with direct links to full articles. Every story
                 links you to the original source for complete coverage. Updated daily at 9 AM UTC.
               </p>
+
+              <div className="mb-8 rounded-sm overflow-hidden">
+                <img src="/arsenal-fc-emirates-stadium-action.jpg" alt="Arsenal FC" className="w-full h-auto object-cover" />
+              </div>
+              {/* </CHANGE> */}
 
               {/* Newsletter Signup */}
               <div className="max-w-sm">
