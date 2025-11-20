@@ -4,81 +4,98 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Clean modern palette */
-  --background: oklch(0.98 0 0);
-  --foreground: oklch(0.12 0 0);
+  /* Arsenal classic away kit colors - pale yellow accents and bold navy blue */
+  --background: oklch(0.98 0.005 85);
+  --foreground: oklch(0.12 0.01 260);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.12 0 0);
+  --card-foreground: oklch(0.12 0.01 260);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.12 0 0);
-  /* Arsenal red accent for primary */
-  --primary: oklch(0.45 0.32 17.4);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.96 0 0);
-  --secondary-foreground: oklch(0.12 0 0);
-  --muted: oklch(0.94 0 0);
-  --muted-foreground: oklch(0.5 0 0);
-  --accent: oklch(0.45 0.32 17.4);
-  --accent-foreground: oklch(1 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.577 0.245 27.325);
-  --border: oklch(0.96 0 0);
-  --input: oklch(0.96 0 0);
-  --ring: oklch(0.45 0.32 17.4);
-  --chart-1: oklch(0.45 0.32 17.4);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --radius: 0.5rem;
-  --sidebar: oklch(0.98 0 0);
-  --sidebar-foreground: oklch(0.12 0 0);
-  --sidebar-primary: oklch(0.45 0.32 17.4);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.94 0 0);
-  --sidebar-accent-foreground: oklch(0.12 0 0);
-  --sidebar-border: oklch(0.96 0 0);
-  --sidebar-ring: oklch(0.45 0.32 17.4);
+  --popover-foreground: oklch(0.12 0.01 260);
+
+  /* Arsenal red as primary - keeping the home kit red */
+  --primary: oklch(0.45 0.25 25);
+  --primary-foreground: oklch(0.99 0.002 85);
+
+  /* Pale yellow accent from classic away kit */
+  --secondary: oklch(0.92 0.08 95);
+  --secondary-foreground: oklch(0.12 0.01 260);
+
+  /* Slightly deeper yellow for variety */
+  --accent: oklch(0.85 0.12 90);
+  --accent-foreground: oklch(0.12 0.01 260);
+
+  /* Light neutral muted */
+  --muted: oklch(0.94 0.005 85);
+  --muted-foreground: oklch(0.4 0.01 260);
+
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(0.99 0.002 85);
+
+  /* Bold navy blue borders - classic away kit color */
+  --border: oklch(0.25 0.08 255);
+  --input: oklch(0.85 0.005 85);
+  --ring: oklch(0.25 0.08 255);
+
+  /* Chart colors with navy and yellow palette */
+  --chart-1: oklch(0.45 0.25 25);
+  --chart-2: oklch(0.25 0.08 255);
+  --chart-3: oklch(0.85 0.12 90);
+  --chart-4: oklch(0.92 0.08 95);
+  --chart-5: oklch(0.35 0.08 255);
+
+  /* Sharp, geometric radius */
+  --radius: 0rem;
+
+  --sidebar: oklch(0.98 0.005 85);
+  --sidebar-foreground: oklch(0.12 0.01 260);
+  --sidebar-primary: oklch(0.25 0.08 255);
+  --sidebar-primary-foreground: oklch(0.99 0.002 85);
+  --sidebar-accent: oklch(0.92 0.08 95);
+  --sidebar-accent-foreground: oklch(0.12 0.01 260);
+  --sidebar-border: oklch(0.25 0.08 255);
+  --sidebar-ring: oklch(0.25 0.08 255);
 }
 
 .dark {
-  --background: oklch(0.08 0 0);
-  --foreground: oklch(0.95 0 0);
-  --card: oklch(0.12 0 0);
-  --card-foreground: oklch(0.95 0 0);
-  --popover: oklch(0.12 0 0);
-  --popover-foreground: oklch(0.95 0 0);
-  --primary: oklch(0.65 0.32 17.4);
-  --primary-foreground: oklch(0.08 0 0);
-  --secondary: oklch(0.2 0 0);
-  --secondary-foreground: oklch(0.95 0 0);
-  --muted: oklch(0.22 0 0);
-  --muted-foreground: oklch(0.6 0 0);
-  --accent: oklch(0.65 0.32 17.4);
-  --accent-foreground: oklch(0.08 0 0);
-  --destructive: oklch(0.396 0.141 25.723);
-  --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(0.22 0 0);
-  --input: oklch(0.22 0 0);
-  --ring: oklch(0.65 0.32 17.4);
-  --chart-1: oklch(0.65 0.32 17.4);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.08 0 0);
-  --sidebar-foreground: oklch(0.95 0 0);
-  --sidebar-primary: oklch(0.65 0.32 17.4);
-  --sidebar-primary-foreground: oklch(0.08 0 0);
-  --sidebar-accent: oklch(0.22 0 0);
-  --sidebar-accent-foreground: oklch(0.95 0 0);
-  --sidebar-border: oklch(0.22 0 0);
-  --sidebar-ring: oklch(0.65 0.32 17.4);
+  --background: oklch(0.12 0.01 260);
+  --foreground: oklch(0.95 0.005 85);
+  --card: oklch(0.15 0.01 260);
+  --card-foreground: oklch(0.95 0.005 85);
+  --popover: oklch(0.15 0.01 260);
+  --popover-foreground: oklch(0.95 0.005 85);
+  --primary: oklch(0.58 0.22 25);
+  --primary-foreground: oklch(0.12 0.01 260);
+  --secondary: oklch(0.92 0.08 95);
+  --secondary-foreground: oklch(0.12 0.01 260);
+  --muted: oklch(0.25 0.01 260);
+  --muted-foreground: oklch(0.65 0.005 85);
+  --accent: oklch(0.85 0.12 90);
+  --accent-foreground: oklch(0.12 0.01 260);
+  --destructive: oklch(0.5 0.22 25);
+  --destructive-foreground: oklch(0.95 0.005 85);
+  --border: oklch(0.35 0.08 255);
+  --input: oklch(0.25 0.01 260);
+  --ring: oklch(0.35 0.08 255);
+  --chart-1: oklch(0.58 0.22 25);
+  --chart-2: oklch(0.35 0.08 255);
+  --chart-3: oklch(0.85 0.12 90);
+  --chart-4: oklch(0.92 0.08 95);
+  --chart-5: oklch(0.45 0.08 255);
+  --sidebar: oklch(0.12 0.01 260);
+  --sidebar-foreground: oklch(0.95 0.005 85);
+  --sidebar-primary: oklch(0.35 0.08 255);
+  --sidebar-primary-foreground: oklch(0.95 0.005 85);
+  --sidebar-accent: oklch(0.85 0.12 90);
+  --sidebar-accent-foreground: oklch(0.12 0.01 260);
+  --sidebar-border: oklch(0.35 0.08 255);
+  --sidebar-ring: oklch(0.35 0.08 255);
 }
 
 @theme inline {
-  --font-sans: "Geist", "Geist Fallback";
-  --font-mono: "Geist Mono", "Geist Mono Fallback";
+  /* Urban display font (Space Grotesk) for bold headlines */
+  --font-display: var(--font-display);
+  --font-sans: var(--font-sans);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -123,5 +140,19 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Bold, urban typography - display font for all headings */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display font-bold tracking-tight;
+  }
+
+  p {
+    @apply leading-relaxed;
   }
 }
