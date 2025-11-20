@@ -1,14 +1,19 @@
 import { createClient } from "@/lib/supabase/server"
 import { WeatherReportForm } from "@/components/weather-report-form"
+import { AdminAuth } from "@/components/admin-auth"
+import { cookies } from "next/headers"
 
 export default async function AdminWeatherReportPage() {
+  const cookieStore = await cookies()
+  const isAuthenticated = cookieStore.get("admin_auth")?.value === "true"
+
   const supabase = await createClient()
 
   // Get today's report if it exists
   const today = new Date().toISOString().split("T")[0]
   const { data: todayReport } = await supabase.from("weather_reports").select("*").eq("report_date", today).single()
 
-  return (
+  const content = (
     <main className="min-h-screen bg-background py-16">
       <div className="max-w-3xl mx-auto px-4 md:px-6">
         <div className="mb-8">
@@ -32,4 +37,10 @@ export default async function AdminWeatherReportPage() {
       </div>
     </main>
   )
+
+  if (!isAuthenticated) {
+    return <AdminAuth>{content}</AdminAuth>
+  }
+
+  return content
 }

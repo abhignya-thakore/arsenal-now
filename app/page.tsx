@@ -5,12 +5,16 @@ import { AdSlot } from "@/components/ad-slot"
 import { SidebarAds } from "@/components/sidebar-ads"
 import { getArsenalResults, getArsenalFixtures } from "@/lib/football-api"
 import { MatchCard } from "@/components/match-card"
+import { WeatherReport } from "@/components/weather-report"
 
 export const metadata = {
   title: "ArsenalNow | Latest Arsenal FC News",
   description:
     "ArsenalNow - Curated one-sentence summaries of Arsenal FC news from top sources with direct links to full articles.",
 }
+
+export const dynamic = "force-dynamic"
+export const revalidate = 0
 
 export default async function Home() {
   const supabase = await createClient()
@@ -82,7 +86,11 @@ export default async function Home() {
               </p>
 
               <div className="mb-8 rounded-sm overflow-hidden">
-                <img src="/arsenal-fc-emirates-stadium-action.jpg" alt="Arsenal FC" className="w-full h-auto object-cover" />
+                <img
+                  src="/arsenal-fc-emirates-stadium-action.jpg"
+                  alt="Arsenal FC"
+                  className="w-full h-auto object-cover"
+                />
               </div>
               {/* </CHANGE> */}
 
@@ -149,6 +157,9 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      {/* Weather Report Section */}
+      <WeatherReport />
 
       {/* Leaderboard Ad */}
       {adClient && (
