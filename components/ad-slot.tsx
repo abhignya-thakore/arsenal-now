@@ -10,11 +10,10 @@ interface AdSlotProps {
 
 export function AdSlot({ adSlot, adClient, className = "" }: AdSlotProps) {
   useEffect(() => {
-    // Push AdSense ad
     try {
       ;(window.adsbygoogle = window.adsbygoogle || []).push({})
     } catch (err) {
-      console.log("[v0] AdSense not yet loaded")
+      // Silently fail if AdSense not loaded yet
     }
   }, [])
 
