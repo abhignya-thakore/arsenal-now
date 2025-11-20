@@ -54,79 +54,91 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen bg-background">
+      {/* Top Banner Ad */}
+      {adClient && (
+        <section className="border-b border-border bg-muted/30 py-3">
+          <div className="max-w-7xl mx-auto px-4 md:px-6">
+            <p className="text-xs text-muted-foreground font-semibold mb-2">ADVERTISEMENT</p>
+            <AdSlot adSlot="9876543210" adClient={adClient} className="min-h-[90px]" />
+          </div>
+        </section>
+      )}
+
       {/* Hero Section */}
       <section className="border-b border-border py-16 md:py-24">
         <div className="max-w-6xl mx-auto px-4 md:px-6">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 bg-primary rounded-sm flex items-center justify-center">
-              <span className="text-xl font-bold text-primary-foreground">A</span>
-            </div>
-            <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-foreground">ArsenalNow</h1>
-          </div>
-          <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed mb-12">
-            Daily Arsenal FC news from trusted sources. One-sentence summaries with direct links to full articles. Every
-            story links you to the original source for complete coverage. Updated daily at 9 AM UTC.
-          </p>
+          <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
+            {/* Left side - Logo, title, description, newsletter */}
+            <div className="flex-1">
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-10 h-10 bg-primary rounded-sm flex items-center justify-center">
+                  <span className="text-xl font-bold text-primary-foreground">A</span>
+                </div>
+                <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-foreground">ArsenalNow</h1>
+              </div>
+              <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed mb-12">
+                Daily Arsenal FC news from trusted sources. Headlines with direct links to full articles. Every story
+                links you to the original source for complete coverage. Updated daily at 9 AM UTC.
+              </p>
 
-          {/* Newsletter Signup */}
-          <div className="max-w-sm">
-            <h2 className="text-sm font-semibold text-foreground mb-4 uppercase tracking-wide">Subscribe</h2>
-            <NewsletterSignup />
-            <p className="text-xs text-muted-foreground mt-3">Get the best Arsenal news delivered to your inbox</p>
-          </div>
-        </div>
-      </section>
-
-      <section className="border-b border-border bg-muted/30 py-12">
-        <div className="max-w-6xl mx-auto px-4 md:px-6">
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* Recent Results */}
-            <div>
-              <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-2">
-                <span className="text-primary">•</span>
-                Recent Results
-              </h2>
-              <div className="space-y-3">
-                {results.length > 0 ? (
-                  results.map((match) => (
-                    <MatchCard
-                      key={match.id}
-                      homeTeam={match.homeTeam.name}
-                      awayTeam={match.awayTeam.name}
-                      homeScore={match.score.fullTime.home}
-                      awayScore={match.score.fullTime.away}
-                      date={match.utcDate}
-                      competition={match.competition.name}
-                      isResult={true}
-                    />
-                  ))
-                ) : (
-                  <p className="text-sm text-muted-foreground">No recent results available</p>
-                )}
+              {/* Newsletter Signup */}
+              <div className="max-w-sm">
+                <h2 className="text-sm font-semibold text-foreground mb-4 uppercase tracking-wide">Subscribe</h2>
+                <NewsletterSignup />
+                <p className="text-xs text-muted-foreground mt-3">Get the best Arsenal news delivered to your inbox</p>
               </div>
             </div>
 
-            {/* Upcoming Fixtures */}
-            <div>
-              <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-2">
-                <span className="text-primary">•</span>
-                Upcoming Fixtures
-              </h2>
-              <div className="space-y-3">
-                {fixtures.length > 0 ? (
-                  fixtures.map((match) => (
-                    <MatchCard
-                      key={match.id}
-                      homeTeam={match.homeTeam.name}
-                      awayTeam={match.awayTeam.name}
-                      date={match.utcDate}
-                      competition={match.competition.name}
-                      isResult={false}
-                    />
-                  ))
-                ) : (
-                  <p className="text-sm text-muted-foreground">No upcoming fixtures available</p>
-                )}
+            {/* Right side - Fixtures and Results (compact on desktop) */}
+            <div className="lg:w-80 space-y-6">
+              {/* Recent Results */}
+              <div>
+                <h2 className="text-lg font-bold text-foreground mb-3 flex items-center gap-2">
+                  <span className="text-primary">•</span>
+                  Recent Results
+                </h2>
+                <div className="space-y-2">
+                  {results.length > 0 ? (
+                    results.map((match) => (
+                      <MatchCard
+                        key={match.id}
+                        homeTeam={match.homeTeam.name}
+                        awayTeam={match.awayTeam.name}
+                        homeScore={match.score.fullTime.home}
+                        awayScore={match.score.fullTime.away}
+                        date={match.utcDate}
+                        competition={match.competition.name}
+                        isResult={true}
+                      />
+                    ))
+                  ) : (
+                    <p className="text-xs text-muted-foreground">No recent results available</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Upcoming Fixtures */}
+              <div>
+                <h2 className="text-lg font-bold text-foreground mb-3 flex items-center gap-2">
+                  <span className="text-primary">•</span>
+                  Upcoming Fixtures
+                </h2>
+                <div className="space-y-2">
+                  {fixtures.length > 0 ? (
+                    fixtures.map((match) => (
+                      <MatchCard
+                        key={match.id}
+                        homeTeam={match.homeTeam.name}
+                        awayTeam={match.awayTeam.name}
+                        date={match.utcDate}
+                        competition={match.competition.name}
+                        isResult={false}
+                      />
+                    ))
+                  ) : (
+                    <p className="text-xs text-muted-foreground">No upcoming fixtures available</p>
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -172,7 +184,7 @@ export default async function Home() {
                           <span className="text-primary">•</span>
                           {source}
                         </h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                           {articlesByDate[date][source].map((article) => (
                             <ArticleCard
                               key={article.id}

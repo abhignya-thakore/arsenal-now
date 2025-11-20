@@ -16,8 +16,8 @@ export function ArticleCard({ title, summary, source, url, publishedAt }: Articl
   })
 
   return (
-    <article className="bg-card border border-border rounded-sm p-6 hover:border-primary/30 hover:shadow-sm transition-all duration-300 group">
-      <div className="flex items-start justify-between gap-3 mb-4">
+    <article className="bg-card border border-border rounded-sm p-4 hover:border-primary/30 hover:shadow-sm transition-all duration-300 group">
+      <div className="flex items-start justify-between gap-3 mb-3">
         <a
           href={url}
           target="_blank"
@@ -29,20 +29,9 @@ export function ArticleCard({ title, summary, source, url, publishedAt }: Articl
         <span className="text-xs text-muted-foreground whitespace-nowrap">{formattedDate}</span>
       </div>
 
-      <h3 className="text-base font-semibold text-foreground mb-3 group-hover:text-primary transition-colors leading-snug">
+      <h3 className="text-base font-semibold text-foreground group-hover:text-primary transition-colors leading-snug">
         {title}
       </h3>
-
-      <p className="text-sm text-muted-foreground mb-4 leading-relaxed">{summary}</p>
-
-      <a
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center gap-2 bg-primary text-primary-foreground font-semibold text-xs px-4 py-2 rounded-sm hover:bg-primary/90 transition-colors"
-      >
-        Read Full Article on {source} →
-      </a>
     </article>
   )
 }
